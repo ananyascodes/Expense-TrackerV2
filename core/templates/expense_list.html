@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>All Expenses</h2>
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">← Back to Dashboard</a>
+        </div>
+        
+        {% if expenses %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td>{{ expense.date|date:"d M Y" }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ expense.category.name }}</span>
+                            </td>
+                            <td><strong>₹{{ expense.amount }}</strong></td>
+                            <td>{{ expense.description|truncatewords:8 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5>Total Expenses: <strong>₹{{ expenses|length|add:0 }}</strong> transactions</h5>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h5>No expenses yet!</h5>
+                <p><a href="{% url 'add_expense' %}" class="btn btn-success">Add your first expense</a></p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
